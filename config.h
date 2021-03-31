@@ -13,7 +13,7 @@ static const char col_gray1[]       = "#222222";
 static const char col_gray2[]       = "#444444";
 static const char col_gray3[]       = "#bbbbbb";
 static const char col_gray4[]       = "#eeeeee";
-static const char col_cyan[]        = "#005577";
+static const char col_cyan[]        = "#BF616A";
 static const char *colors[][3]      = {
 	/*               fg         bg         border   */
 	[SchemeNorm] = { col_gray3, col_gray1, col_gray2 },
@@ -28,11 +28,16 @@ static const Rule rules[] = {
 	 *	WM_CLASS(STRING) = instance, class
 	 *	WM_NAME(STRING) = title
 	 */
-	/* class      		instance    title       				tags mask     isfloating   monitor */
-	{ "Gimp",     		NULL,       NULL,       				0,            1,           -1 },
-	{ "Firefox",  		NULL,       NULL,       				1 << 8,       0,           -1 },
-	{ "brave-browser", 	NULL, 		NULL,						1 << 8,		  0,		   -1 },
-	{ NULL, 			NULL,		"Task Manager - Brave", 	0,			  1,		   -1 },
+	/* class      			instance    title       				tags mask     isfloating   monitor */
+	{ "Gimp",     			NULL,       NULL,       				0,            1,           -1 },
+	{ "Brave-browser", 		NULL, 		NULL,						1 << 2,		  0,		   -1 },
+	{ "Chromium", 			NULL, 		NULL,						1 << 3,		  0,		   -1 },
+	{ "discord",			NULL,		NULL,						1 << 4,		  0,		   -1 },
+	{ "Spotify",			NULL,		NULL,						1 << 5,		  0,		   -1 },
+	{ "jetbrains-studio",	NULL,		NULL,						1 << 1,		  0,		   -1 },
+	{ NULL,					"win0",		NULL,						1 << 1,		  1,		   -1 },
+	{ NULL, 				NULL,		"Task Manager - Brave", 	0,			  1,		   -1 },
+	{ NULL,					NULL,		"Android Emulator",			1 << 1,		  1,		   -1 }, // not working
 };
 
 /* layout(s) */
@@ -59,8 +64,6 @@ static const Layout layouts[] = {
 #define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
 
 /* commands */
-static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
-static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
 static const char *termcmd[]  = { TERMINAL, NULL };
 
 static Key keys[] = {
@@ -70,8 +73,8 @@ static Key keys[] = {
 	{ MODKEY,                       XK_b,      	togglebar,      		{0} },
 	{ MODKEY,                       XK_j,      	focusstack,     		{.i = +1 } },
 	{ MODKEY,                       XK_k,      	focusstack,     		{.i = -1 } },
-	{ MODKEY,                       XK_i,      	incnmaster,     		{.i = +1 } },
-	{ MODKEY,                       XK_d,      	incnmaster,     		{.i = -1 } },
+	/* { MODKEY,                       XK_i,      	incnmaster,     		{.i = +1 } }, */
+	/* { MODKEY,                       XK_d,      	incnmaster,     		{.i = -1 } }, */
 	{ MODKEY,                       XK_h,      	setmfact,       		{.f = -0.05} },
 	{ MODKEY,                       XK_l,      	setmfact,       		{.f = +0.05} },
 	{ MODKEY,             			XK_e,	   	zoom,           		{0} },
