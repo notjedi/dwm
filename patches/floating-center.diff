@@ -1,0 +1,19 @@
+diff --git a/dwm.c b/dwm.c
+index 0af0ec9..c3dd5f8 100644
+--- a/dwm.c
++++ b/dwm.c
+@@ -1714,9 +1714,11 @@ togglefloating(const Arg *arg)
+ 	if (selmon->sel->isfullscreen) /* no support for fullscreen windows */
+ 		return;
+ 	selmon->sel->isfloating = !selmon->sel->isfloating || selmon->sel->isfixed;
+-	if (selmon->sel->isfloating)
+-		resize(selmon->sel, selmon->sel->x, selmon->sel->y,
+-			selmon->sel->w, selmon->sel->h, 0);
++	if (selmon->sel->isfloating) {
++		int half_w = selmon->mw/2;
++		int half_h = selmon->mh/2;
++		resize(selmon->sel, (int)half_w/2, (int)half_h/2, half_w, half_h, 0);
++	}
+ 	arrange(selmon);
+ }
+ 
