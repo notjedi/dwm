@@ -243,7 +243,6 @@ static int sw, sh;           /* X display screen geometry width, height */
 static int bh, blw = 0;      /* bar geometry */
 static int lrpad;            /* sum of left and right padding for text */
 static int (*xerrorxlib)(Display *, XErrorEvent *);
-static unsigned int last_sellt;
 static unsigned int numlockmask = 0;
 static void (*handler[LASTEvent]) (XEvent *) = {
 	[ButtonPress] = buttonpress,
@@ -1502,13 +1501,8 @@ setfullscreen(Client *c, int fullscreen)
 void
 togglefullscreen(const Arg *arg)
 {
-	if (selmon->showbar) {
-		last_sellt = selmon->sellt;
-		setlayout(&((Arg){.v = &layouts[2]}));
-	} else
-		setlayout(&((Arg){.v = &layouts[last_sellt]}));
-
-	togglebar(arg);
+	if (selmon->sel)
+		setfullscreen(selmon->sel, !selmon->sel->isfullscreen);
 }
 
 void
