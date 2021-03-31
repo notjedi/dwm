@@ -3,7 +3,7 @@
 #define TERMINAL "alacritty"
 
 /* appearance */
-static const unsigned int borderpx  = 1;        /* border pixel of windows */
+static const unsigned int borderpx  = 2;        /* border pixel of windows */
 static const unsigned int snap      = 32;       /* snap pixel */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
@@ -37,7 +37,7 @@ static const Rule rules[] = {
 	{ "jetbrains-studio",	NULL,		NULL,						1 << 1,		  0,		   -1 },
 	{ NULL,					"win0",		NULL,						1 << 1,		  1,		   -1 },
 	{ NULL, 				NULL,		"Task Manager - Brave", 	0,			  1,		   -1 },
-	{ NULL,					NULL,		"Android Emulator",			1 << 1,		  1,		   -1 }, // not working
+	{ NULL,					NULL,		"Android Emulator",			1 << 1,		  1,		   -1 },
 };
 
 /* layout(s) */
@@ -78,7 +78,8 @@ static Key keys[] = {
 	{ MODKEY,                       XK_h,      	setmfact,       		{.f = -0.05} },
 	{ MODKEY,                       XK_l,      	setmfact,       		{.f = +0.05} },
 	{ MODKEY,             			XK_e,	   	zoom,           		{0} },
-	{ Mod1Mask,                     XK_Tab,    	view,           		{0} },
+	{ Mod1Mask,                     XK_Tab,    	shiftview,           	{.i = +1} },
+	{ Mod1Mask|ShiftMask,           XK_Tab,    	shiftview,           	{.i = -1} },
 	{ MODKEY,             			XK_q,      	killclient,     		{0} },
 	{ MODKEY,                       XK_t,      	setlayout,      		{.v = &layouts[0]} },
 	{ MODKEY,                       XK_m,      	setlayout,      		{.v = &layouts[1]} },

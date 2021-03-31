@@ -203,6 +203,7 @@ static void setlayout(const Arg *arg);
 static void setmfact(const Arg *arg);
 static void setup(void);
 static void seturgent(Client *c, int urg);
+static void shiftview(const Arg *arg);
 static void showhide(Client *c);
 static void sigchld(int unused);
 static void spawn(const Arg *arg);
@@ -1609,6 +1610,27 @@ seturgent(Client *c, int urg)
 	wmh->flags = urg ? (wmh->flags | XUrgencyHint) : (wmh->flags & ~XUrgencyHint);
 	XSetWMHints(dpy, c->win, wmh);
 	XFree(wmh);
+}
+
+void
+shiftview(const Arg *arg) {
+	/** Function to shift the current view to the left/right
+	 *
+	 * @param: "arg->i" stores the number of tags to shift right (positive value)
+	 *          or left (negative value)
+	 * patch from: https://lists.suckless.org/dev/att-7590/shiftview.c
+	 */
+	Arg shift;
+
+	if(arg->i > 0)
+		shift.ui = (selmon->tagset[selmon->seltags] << arg->i)
+		   | (selmon->tagset[selmon->seltags] >> (LENGTH(tags) - arg->i));
+
+	else
+		shift.ui = selmon->tagset[selmon->seltags] >> (- arg->i)
+		   | selmon->tagset[selmon->seltags] << (LENGTH(tags) + arg->i);
+
+	view(&shift);
 }
 
 void
