@@ -174,7 +174,7 @@ static long getstate(Window w);
 static int gettextprop(Window w, Atom atom, char *text, unsigned int size);
 static void grabbuttons(Client *c, int focused);
 static void grabkeys(void);
-static void incnmaster(const Arg *arg);
+/* static void incnmaster(const Arg *arg); */
 static void keypress(XEvent *e);
 static void killclient(const Arg *arg);
 static void manage(Window w, XWindowAttributes *wa);
@@ -964,12 +964,12 @@ grabkeys(void)
 	}
 }
 
-void
-incnmaster(const Arg *arg)
-{
-	selmon->nmaster = MAX(selmon->nmaster + arg->i, 0);
-	arrange(selmon);
-}
+/* void */
+/* incnmaster(const Arg *arg) */
+/* { */
+/* 	selmon->nmaster = MAX(selmon->nmaster + arg->i, 0); */
+/* 	arrange(selmon); */
+/* } */
 
 #ifdef XINERAMA
 static int
@@ -1714,9 +1714,11 @@ togglefloating(const Arg *arg)
 	if (selmon->sel->isfullscreen) /* no support for fullscreen windows */
 		return;
 	selmon->sel->isfloating = !selmon->sel->isfloating || selmon->sel->isfixed;
-	if (selmon->sel->isfloating)
-		resize(selmon->sel, selmon->sel->x, selmon->sel->y,
-			selmon->sel->w, selmon->sel->h, 0);
+	if (selmon->sel->isfloating) {
+		int half_w = selmon->mw/2;
+		int half_h = selmon->mh/2;
+		resize(selmon->sel, (int)half_w/2, (int)half_h/2, half_w, half_h, 0);
+	}
 	arrange(selmon);
 }
 
