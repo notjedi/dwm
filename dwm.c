@@ -88,8 +88,7 @@ struct Client {
 	char name[256];
 	float mina, maxa;
 	int x, y, w, h;
-	int oldx, oldy, oldw, oldh;
-	int basew, baseh, incw, inch, maxw, maxh, minw, minh;
+	int oldx, oldy, oldw, oldh; int basew, baseh, incw, inch, maxw, maxh, minw, minh;
 	int bw, oldbw;
 	unsigned int tags;
 	int isfixed, isfloating, isurgent, neverfocus, oldstate, isfullscreen;
@@ -200,6 +199,7 @@ static void sendmon(Client *c, Monitor *m);
 static void setclientstate(Client *c, long state);
 static void setfocus(Client *c);
 static void setfullscreen(Client *c, int fullscreen);
+static void togglefullscreen(const Arg *arg);
 static void setlayout(const Arg *arg);
 static void setmfact(const Arg *arg);
 static void setup(void);
@@ -243,6 +243,7 @@ static int sw, sh;           /* X display screen geometry width, height */
 static int bh, blw = 0;      /* bar geometry */
 static int lrpad;            /* sum of left and right padding for text */
 static int (*xerrorxlib)(Display *, XErrorEvent *);
+static unsigned int last_sellt;
 static unsigned int numlockmask = 0;
 static void (*handler[LASTEvent]) (XEvent *) = {
 	[ButtonPress] = buttonpress,
@@ -1496,6 +1497,18 @@ setfullscreen(Client *c, int fullscreen)
 		resizeclient(c, c->x, c->y, c->w, c->h);
 		arrange(c->mon);
 	}
+}
+
+void
+togglefullscreen(const Arg *arg)
+{
+	if (selmon->showbar) {
+		last_sellt = selmon->sellt;
+		setlayout(&((Arg){.v = &layouts[2]}));
+	} else
+		setlayout(&((Arg){.v = &layouts[last_sellt]}));
+
+	togglebar(arg);
 }
 
 void
