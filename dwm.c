@@ -245,6 +245,7 @@ static int bh, blw = 0;      /* bar geometry */
 static int lrpad;            /* sum of left and right padding for text */
 static int (*xerrorxlib)(Display *, XErrorEvent *);
 static unsigned int numlockmask = 0;
+static unsigned int activetagmask = 1;
 static void (*handler[LASTEvent]) (XEvent *) = {
 	[ButtonPress] = buttonpress,
 	[ClientMessage] = clientmessage,
@@ -562,6 +563,12 @@ configurenotify(XEvent *e)
 	XConfigureEvent *ev = &e->xconfigure;
 	int dirty;
 
+	for (m = mons; m; m = m->next) {
+		for (c = m->clients; c; c = c->next) {
+			activetagmask |= c->tags;
+		}
+	}
+
 	/* TODO: updategeom handling sucks, needs to be simplified */
 	if (ev->window == root) {
 		dirty = (sw != ev->width || sh != ev->height);
@@ -571,9 +578,10 @@ configurenotify(XEvent *e)
 			drw_resize(drw, sw, bh);
 			updatebars();
 			for (m = mons; m; m = m->next) {
-				for (c = m->clients; c; c = c->next)
+				for (c = m->clients; c; c = c->next) {
 					if (c->isfullscreen)
 						resizeclient(c, m->mx, m->my, m->mw, m->mh);
+				}
 				XMoveResizeWindow(dpy, m->barwin, m->wx, m->by, m->ww, bh);
 			}
 			focus(NULL);
@@ -724,7 +732,7 @@ drawbar(Monitor *m)
 	for (i = 0; i < LENGTH(tags); i++) {
 		/* do not draw vacant tags */
 		if (!(occ & 1 << i || m->tagset[m->seltags] & 1 << i))
-		continue;
+			continue;
 
 		w = TEXTW(tags[i]);
 		drw_setscheme(drw, scheme[m->tagset[m->seltags] & 1 << i ? SchemeSel : SchemeNorm]);
@@ -1619,22 +1627,42 @@ seturgent(Client *c, int urg)
 
 void
 shiftview(const Arg *arg) {
-	/** Function to shift the current view to the left/right
-	 *
-	 * @param: "arg->i" stores the number of tags to shift right (positive value)
-	 *          or left (negative value)
-	 * patch from: https://lists.suckless.org/dev/att-7590/shiftview.c
-	 */
 	Arg shift;
 
-	if(arg->i > 0)
-		shift.ui = (selmon->tagset[selmon->seltags] << arg->i)
-		   | (selmon->tagset[selmon->seltags] >> (LENGTH(tags) - arg->i));
+	int i = 0, len = LENGTH(tags) - 1;
+	unsigned int curtag = selmon->tagset[selmon->seltags], lefttag = 0, righttag = 0, temp = (1 << len), seltag = 0;
 
-	else
-		shift.ui = selmon->tagset[selmon->seltags] >> (- arg->i)
-		   | selmon->tagset[selmon->seltags] << (LENGTH(tags) + arg->i);
+	if (arg->i > 0) {
 
+		for (i=1; lefttag=curtag<<i, !(lefttag & temp); i++) {
+			if (activetagmask & lefttag)
+				break;
+		}
+		if (lefttag & temp) {
+			for (i=0; i<=len; i++) {
+				if (activetagmask & (1 << i))
+					break;
+			}
+			seltag = (1 << i);
+		} else
+			seltag = lefttag;
+	} else {
+
+		for (i=1; righttag=curtag>>i, righttag; i++) {
+			if (activetagmask & righttag)
+				break;
+		}
+		if (righttag == 0) {
+			for (i=len; i>=0; i--) {
+				if (activetagmask & (1 << i))
+					break;
+			}
+			seltag = (1 << i);
+		} else
+			seltag = righttag;
+	}
+
+	shift.ui = seltag;
 	view(&shift);
 }
 
@@ -1830,8 +1858,12 @@ unmapnotify(XEvent *e)
 	if ((c = wintoclient(ev->window))) {
 		if (ev->send_event)
 			setclientstate(c, WithdrawnState);
-		else
+		else {
 			unmanage(c, 0);
+			activetagmask = selmon->seltags;
+			for (Client *c=selmon->clients; c; c=c->next)
+				activetagmask |= c->tags;
+		}
 	}
 }
 
