@@ -581,12 +581,11 @@ configurenotify(XEvent *e)
 
 	/* only update `activetagmask` if lasteventtype == MapRequest as  */
 	/* configurenotify is called a bunch of times even without a new client spawning */
-	if (lasteventtype == MapRequest)
-		for (m = mons; m; m = m->next) {
-			for (c = m->clients; c; c = c->next) {
+	if (lasteventtype == MapRequest || activetagmask == selmon->tagset[selmon->seltags]) {
+		for (m = mons; m; m = m->next)
+			for (c = m->clients; c; c = c->next)
 				activetagmask |= c->tags;
-			}
-		}
+	}
 
 	/* TODO: updategeom handling sucks, needs to be simplified */
 	if (ev->window == root) {
@@ -1762,6 +1761,10 @@ shiftview(const Arg *arg) {
 	Arg shift;
 	int i = 0, len = LENGTH(tags) - 1;
 	unsigned int curtag = selmon->tagset[selmon->seltags], temp = (1 << len), seltag = 0;
+
+	/* no other tags active so return */
+	if (activetagmask == selmon->tagset[selmon->seltags])
+		return;
 
 	if (arg->i > 0) {
 		/* moving to next tag */
