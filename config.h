@@ -45,11 +45,13 @@ static const float mfact     = 0.50; /* factor of master area size [0.05..0.95] 
 static const int nmaster     = 1;    /* number of clients in master area */
 static const int resizehints = 1;    /* 1 means respect size hints in tiled resizals */
 
+#include "fibonacci.c"
 static const Layout layouts[] = {
 	/* symbol     arrange function */
 	{ "[]=",      tile },    /* first entry is default */
 	{ "><>",      NULL },    /* no layout function means floating behavior */
 	{ "[M]",      monocle },
+ 	{ "[\\]",      dwindle },
 };
 
 /* key definitions */
@@ -83,8 +85,9 @@ static Key keys[] = {
 	{ MODKEY,             			XK_q,      	killclient,     		{0} },
 	{ MODKEY,                       XK_t,      	setlayout,      		{.v = &layouts[0]} },
 	{ MODKEY,                       XK_m,      	setlayout,      		{.v = &layouts[1]} },
-	{ MODKEY,                       XK_f,      	togglefullscreen,		{0} },
 	{ MODKEY|ShiftMask,             XK_f,      	setlayout,      		{.v = &layouts[2]} },
+	{ MODKEY,                       XK_a,      	setlayout,      		{.v = &layouts[3]} },
+	{ MODKEY,                       XK_f,      	togglefullscreen,		{0} },
 	{ MODKEY|ShiftMask,           	XK_space,  	setlayout,      		{0} },
 	{ MODKEY,             			XK_space,  	togglefloating, 		{0} },
 	{ MODKEY,                       XK_0,      	view,           		{.ui = ~0 } },

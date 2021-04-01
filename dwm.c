@@ -564,6 +564,8 @@ configurenotify(XEvent *e)
 	XConfigureEvent *ev = &e->xconfigure;
 	int dirty;
 
+	/* only update `activetagmask` if lasteventtype == MapRequest as  */
+	/* configurenotify is called a bunch of times even without a new client spawning */
 	if (lasteventtype == MapRequest)
 		for (m = mons; m; m = m->next) {
 			for (c = m->clients; c; c = c->next) {
