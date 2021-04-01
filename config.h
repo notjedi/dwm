@@ -53,10 +53,10 @@ static const int resizehints = 1;    /* 1 means respect size hints in tiled resi
 #include "fibonacci.c"
 static const Layout layouts[] = {
 	/* symbol     arrange function */
-	{ "[]=",      tile },    /* first entry is default */
+ 	{ "[\\]",      dwindle },
 	{ "><>",      NULL },    /* no layout function means floating behavior */
 	{ "[M]",      monocle },
- 	{ "[\\]",      dwindle },
+	{ "[]=",      tile },    /* first entry is default */
 };
 
 /* key definitions */
@@ -73,60 +73,99 @@ static const Layout layouts[] = {
 /* commands */
 static const char *termcmd[]  = { TERMINAL, NULL };
 
+#include <X11/XF86keysym.h>
+
 static Key keys[] = {
-	/* modifier                     key        	function        		argument */
-	{ MODKEY,                       XK_r,      	spawn,          		SHCMD("rofi -show drun -show-icons -lines 5 -width 30") },
-	{ MODKEY,             			XK_Return, 	spawn,          		SHCMD(TERMINAL) },
-	{ MODKEY,                       XK_b,      	togglebar,      		{0} },
-	{ MODKEY,                       XK_j,      	focusstack,     		{.i = +1 } },
-	{ MODKEY,                       XK_k,      	focusstack,     		{.i = -1 } },
-	/* { MODKEY,                       XK_i,      	incnmaster,     		{.i = +1 } }, */
-	/* { MODKEY,                       XK_d,      	incnmaster,     		{.i = -1 } }, */
-	{ MODKEY,                       XK_h,      	setmfact,       		{.f = -0.05} },
-	{ MODKEY,                       XK_l,      	setmfact,       		{.f = +0.05} },
-	{ MODKEY|Mod1Mask,              XK_h,      incrgaps,       {.i = +1 } },
-	{ MODKEY|Mod1Mask,              XK_l,      incrgaps,       {.i = -1 } },
-	{ MODKEY|Mod1Mask|ShiftMask,    XK_h,      incrogaps,      {.i = +1 } },
-	{ MODKEY|Mod1Mask|ShiftMask,    XK_l,      incrogaps,      {.i = -1 } },
-	{ MODKEY|Mod1Mask|ControlMask,  XK_h,      incrigaps,      {.i = +1 } },
-	{ MODKEY|Mod1Mask|ControlMask,  XK_l,      incrigaps,      {.i = -1 } },
-	{ MODKEY|Mod1Mask,              XK_0,      togglegaps,     {0} },
-	{ MODKEY|Mod1Mask|ShiftMask,    XK_0,      defaultgaps,    {0} },
-	{ MODKEY,                       XK_y,      incrihgaps,     {.i = +1 } },
-	{ MODKEY,                       XK_o,      incrihgaps,     {.i = -1 } },
-	{ MODKEY|ControlMask,           XK_y,      incrivgaps,     {.i = +1 } },
-	{ MODKEY|ControlMask,           XK_o,      incrivgaps,     {.i = -1 } },
-	{ MODKEY|Mod1Mask,              XK_y,      incrohgaps,     {.i = +1 } },
-	{ MODKEY|Mod1Mask,              XK_o,      incrohgaps,     {.i = -1 } },
-	{ MODKEY|ShiftMask,             XK_y,      incrovgaps,     {.i = +1 } },
-	{ MODKEY|ShiftMask,             XK_o,      incrovgaps,     {.i = -1 } },
-	{ MODKEY,             			XK_e,	   	zoom,           		{0} },
-	{ Mod1Mask,                     XK_Tab,    	shiftview,           	{.i = +1} },
-	{ Mod1Mask|ShiftMask,           XK_Tab,    	shiftview,           	{.i = -1} },
-	{ MODKEY,             			XK_q,      	killclient,     		{0} },
-	{ MODKEY,                       XK_t,      	setlayout,      		{.v = &layouts[0]} },
-	{ MODKEY,                       XK_m,      	setlayout,      		{.v = &layouts[1]} },
-	{ MODKEY|ShiftMask,             XK_f,      	setlayout,      		{.v = &layouts[2]} },
-	{ MODKEY,                       XK_a,      	setlayout,      		{.v = &layouts[3]} },
-	{ MODKEY,                       XK_f,      	togglefullscreen,		{0} },
-	{ MODKEY|ShiftMask,           	XK_space,  	setlayout,      		{0} },
-	{ MODKEY,             			XK_space,  	togglefloating, 		{0} },
-	{ MODKEY,                       XK_0,      	view,           		{.ui = ~0 } },
-	{ MODKEY|ShiftMask,             XK_0,      	tag,            		{.ui = ~0 } },
-	{ MODKEY,                       XK_comma,  	focusmon,       		{.i = -1 } },
-	{ MODKEY,                       XK_period, 	focusmon,       		{.i = +1 } },
-	{ MODKEY|ShiftMask,             XK_comma,  	tagmon,         		{.i = -1 } },
-	{ MODKEY|ShiftMask,             XK_period, 	tagmon,         		{.i = +1 } },
-	TAGKEYS(                        XK_1,      	                		0)
-	TAGKEYS(                        XK_2,      	                		1)
-	TAGKEYS(                        XK_3,      	                		2)
-	TAGKEYS(                        XK_4,      	                		3)
-	TAGKEYS(                        XK_5,      	                		4)
-	TAGKEYS(                        XK_6,      	                		5)
-	TAGKEYS(                        XK_7,      	                		6)
-	TAGKEYS(                        XK_8,      	                		7)
-	TAGKEYS(                        XK_9,      	                		8)
-	{ MODKEY|ShiftMask,             XK_q,      	quit,           		{0} },
+	/* modifier                     key        					function        		argument */
+	{ MODKEY,                       XK_b,      					togglebar,      		{0} },
+	{ MODKEY,             			XK_e,	   					zoom,           		{0} },
+	{ MODKEY,                       XK_f,      					togglefullscreen,		{0} },
+	{ MODKEY,                       XK_h,      					setmfact,       		{.f = -0.05 } },
+	{ MODKEY,                       XK_j,      					focusstack,     		{.i = +1 } },
+	{ MODKEY,                       XK_k,      					focusstack,     		{.i = -1 } },
+	{ MODKEY,                       XK_l,      					setmfact,       		{.f = +0.05 } },
+	{ MODKEY, 						XK_p,						spawn,					SHCMD("playerctl play-pause") },
+	{ MODKEY,                       XK_r,      					spawn,          		SHCMD("rofi -show drun -show-icons -lines 5 -width 30") },
+	{ MODKEY,             			XK_q,      					killclient,     		{0} },
+	{ MODKEY, 						XK_bracketleft,				spawn,					SHCMD("playerctl previous") },
+	{ MODKEY, 						XK_bracketright,			spawn,					SHCMD("playerctl next") },
+	{ MODKEY,             			XK_Return, 					spawn,          		SHCMD(TERMINAL) },
+	{ MODKEY,             			XK_space,  					togglefloating, 		{0} },
+
+	{ MODKEY|Mod1Mask,              XK_h,      					incrgaps,       		{.i = +1 } },
+	{ MODKEY|Mod1Mask,              XK_l,      					incrgaps,       		{.i = -1 } },
+	{ MODKEY|Mod1Mask,              XK_0,      					togglegaps,     		{0} },
+	{ MODKEY|Mod1Mask,              XK_y,      					incrohgaps,     		{.i = +1 } },
+	{ MODKEY|Mod1Mask,              XK_o,      					incrohgaps,     		{.i = -1 } },
+	{ MODKEY|ShiftMask,             XK_y,      					incrovgaps,    			{.i = +1 } },
+	{ MODKEY|ShiftMask,             XK_o,      					incrovgaps,    			{.i = -1 } },
+	{ MODKEY|Mod1Mask|ShiftMask,    XK_0,      					defaultgaps,   			{0} },
+	{ MODKEY|Mod1Mask|ShiftMask,    XK_h,      					incrogaps,     			{.i = +1 } },
+	{ MODKEY|Mod1Mask|ShiftMask,    XK_l,      					incrogaps,      		{.i = -1 } },
+
+	{ Mod1Mask,                     XK_Tab,    					shiftview,           	{.i = +1 } },
+	{ Mod1Mask|ShiftMask,           XK_Tab,    					shiftview,           	{.i = -1 } },
+
+	{ MODKEY,                       XK_w,      					setlayout,      		{.v = &layouts[0]} },
+	{ MODKEY,                       XK_s,      					setlayout,      		{.v = &layouts[1]} },
+	{ MODKEY|ShiftMask,             XK_f,      					setlayout,      		{.v = &layouts[2]} },
+	{ MODKEY,                       XK_t,      					setlayout,      		{.v = &layouts[3]} },
+
+	{ MODKEY|ShiftMask,             XK_q,      					quit,           		{0} },
+	{ MODKEY|ShiftMask,           	XK_space,  					setlayout,      		{0} },
+
+	{ 0, 							XF86XK_AudioMute,			spawn,					SHCMD("pamixer -t") },
+	{ 0, 							XF86XK_AudioRaiseVolume,	spawn,					SHCMD("pamixer --allow-boost -i 5") },
+	{ 0, 							XF86XK_AudioLowerVolume,	spawn,					SHCMD("pamixer --allow-boost -d 5") },
+	{ 0, 							XF86XK_AudioNext,			spawn,					SHCMD("playerctl next") },
+	{ 0, 							XF86XK_AudioPrev,			spawn,					SHCMD("playerctl previous") },
+	{ 0, 							XF86XK_AudioPlay,			spawn,					SHCMD("playerctl play-pause") },
+	{ 0, 							XF86XK_AudioPause,			spawn,					SHCMD("playerctl play-pause") },
+	{ 0, 							XF86XK_AudioStop,			spawn,					SHCMD("playerctl stop") },
+	
+
+	TAGKEYS(                        XK_1,      	                						0)
+	TAGKEYS(                        XK_2,      	                						1)
+	TAGKEYS(                        XK_3,      	                						2)
+	TAGKEYS(                        XK_4,      	                						3)
+	TAGKEYS(                        XK_5,      	                						4)
+	TAGKEYS(                        XK_6,      	                						5)
+	TAGKEYS(                        XK_7,      	                						6)
+	TAGKEYS(                        XK_8,      	                						7)
+	TAGKEYS(                        XK_9,      	                						8)
+
+	/* mod + a */
+	/* mod + c */
+	/* mod + d */
+	/* mod + g */
+	/* mod + p */
+	/* mod + v */
+	/* mod + x */
+	/* mod + y - flameshot or maim */
+	/* mod + , - mpc */
+	/* mod + . - mpc */
+	/* mod + braketleft - general audio prev */
+	/* mod + braketright - general audio next */
+	/* mod + shift + d */
+	/* mod + shift + j */
+	/* mod + shift + k */
+	/* print key */
+	/* shift + print key */
+
+	/* TODO: mod + shift + x for slock? */
+	/* TODO: cycle layouts patch */
+	/* TODO: vanity gaps for dwindle layout */
+	/* { MODKEY,                       XK_comma,  	focusmon,       		{.i = -1 } }, */
+	/* { MODKEY,                       XK_period, 	focusmon,       		{.i = +1 } }, */
+	/* { MODKEY|ShiftMask,             XK_comma,  	tagmon,         		{.i = -1 } }, */
+	/* { MODKEY|ShiftMask,             XK_period, 	tagmon,         		{.i = +1 } }, */
+
+	/* { MODKEY|Mod1Mask|ControlMask,  XK_h,      incrigaps,      			{.i = +1 } }, */
+	/* { MODKEY|Mod1Mask|ControlMask,  XK_l,      incrigaps,      			{.i = -1 } }, */
+	/* { MODKEY,                       XK_y,      incrihgaps,     			{.i = +1 } }, */
+	/* { MODKEY,                       XK_o,      incrihgaps,     			{.i = -1 } }, */
+	/* { MODKEY|ControlMask,           XK_y,      incrivgaps,     			{.i = +1 } }, */
+	/* { MODKEY|ControlMask,           XK_o,      incrivgaps,     			{.i = -1 } }, */
 };
 
 /* button definitions */
