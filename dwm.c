@@ -173,6 +173,7 @@ static void focusin(XEvent *e);
 static void focusmon(const Arg *arg);
 static void focusstack(const Arg *arg);
 static Atom getatomprop(Client *c, Atom prop);
+static void getgaps(Monitor *m, int *oh, int *ov, int *ih, int *iv, unsigned int *nc);
 static int getrootptr(int *x, int *y);
 static long getstate(Window w);
 static int gettextprop(Window w, Atom atom, char *text, unsigned int size);
@@ -905,6 +906,29 @@ getatomprop(Client *c, Atom prop)
 		XFree(p);
 	}
 	return atom;
+}
+
+void
+getgaps(Monitor *m, int *oh, int *ov, int *ih, int *iv, unsigned int *nc)
+{
+	unsigned int n, oe, ie;
+	#if PERTAG_PATCH
+	oe = ie = selmon->pertag->enablegaps[selmon->pertag->curtag];
+	#else
+	oe = ie = enablegaps;
+	#endif // PERTAG_PATCH
+	Client *c;
+
+	for (n = 0, c = nexttiled(m->clients); c; c = nexttiled(c->next), n++);
+	if (smartgaps && n == 1) {
+		oe = 0; // outer gaps disabled when only one client
+	}
+
+	*oh = m->gappoh*oe; // outer horizontal gap
+	*ov = m->gappov*oe; // outer vertical gap
+	*ih = m->gappih*ie; // inner horizontal gap
+	*iv = m->gappiv*ie; // inner vertical gap
+	*nc = n;            // number of clients
 }
 
 int
