@@ -1630,36 +1630,34 @@ shiftview(const Arg *arg) {
 	Arg shift;
 
 	int i = 0, len = LENGTH(tags) - 1;
-	unsigned int curtag = selmon->tagset[selmon->seltags], lefttag = 0, righttag = 0, temp = (1 << len), seltag = 0;
+	unsigned int curtag = selmon->tagset[selmon->seltags], temp = (1 << len), seltag = 0;
 
 	if (arg->i > 0) {
-
-		for (i=1; lefttag=curtag<<i, !(lefttag & temp); i++) {
-			if (activetagmask & lefttag)
+		for (i=1; !((curtag << i) & temp); i++) {
+			if (activetagmask & (curtag << i))
 				break;
 		}
-		if (lefttag & temp) {
+		if ((curtag << i) & temp) {
 			for (i=0; i<=len; i++) {
 				if (activetagmask & (1 << i))
 					break;
 			}
 			seltag = (1 << i);
 		} else
-			seltag = lefttag;
+			seltag = (curtag << i);
 	} else {
-
-		for (i=1; righttag=curtag>>i, righttag; i++) {
-			if (activetagmask & righttag)
+		for (i=1; curtag>>i; i++) {
+			if (activetagmask & (curtag >> i))
 				break;
 		}
-		if (righttag == 0) {
+		if ((curtag >> i) == 0) {
 			for (i=len; i>=0; i--) {
 				if (activetagmask & (1 << i))
 					break;
 			}
 			seltag = (1 << i);
 		} else
-			seltag = righttag;
+			seltag = (curtag >> i);
 	}
 
 	shift.ui = seltag;
