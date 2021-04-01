@@ -263,6 +263,7 @@ static void (*handler[LASTEvent]) (XEvent *) = {
 	[UnmapNotify] = unmapnotify
 };
 static Atom wmatom[WMLast], netatom[NetLast];
+static int lasteventtype = 0;
 static int running = 1;
 static Cur *cursor[CurLast];
 static Clr **scheme;
@@ -563,11 +564,12 @@ configurenotify(XEvent *e)
 	XConfigureEvent *ev = &e->xconfigure;
 	int dirty;
 
-	for (m = mons; m; m = m->next) {
-		for (c = m->clients; c; c = c->next) {
-			activetagmask |= c->tags;
+	if (lasteventtype == MapRequest)
+		for (m = mons; m; m = m->next) {
+			for (c = m->clients; c; c = c->next) {
+				activetagmask |= c->tags;
+			}
 		}
-	}
 
 	/* TODO: updategeom handling sucks, needs to be simplified */
 	if (ev->window == root) {
@@ -1391,8 +1393,10 @@ run(void)
 	/* main event loop */
 	XSync(dpy, False);
 	while (running && !XNextEvent(dpy, &ev))
-		if (handler[ev.type])
+		if (handler[ev.type]) {
+			lasteventtype = ev.type;
 			handler[ev.type](&ev); /* call handler */
+		}
 }
 
 void
@@ -1627,17 +1631,20 @@ seturgent(Client *c, int urg)
 
 void
 shiftview(const Arg *arg) {
-	Arg shift;
 
+	/* TODO: more elegant way to do this? */
+	Arg shift;
 	int i = 0, len = LENGTH(tags) - 1;
 	unsigned int curtag = selmon->tagset[selmon->seltags], temp = (1 << len), seltag = 0;
 
 	if (arg->i > 0) {
+		/* moving to next tag */
 		for (i=1; !((curtag << i) & temp); i++) {
 			if (activetagmask & (curtag << i))
 				break;
 		}
 		if ((curtag << i) & temp) {
+			/* no tags infront of curtag so find the last tag behind it */
 			for (i=0; i<=len; i++) {
 				if (activetagmask & (1 << i))
 					break;
@@ -1646,11 +1653,13 @@ shiftview(const Arg *arg) {
 		} else
 			seltag = (curtag << i);
 	} else {
+		/* moving to prev tag */
 		for (i=1; curtag>>i; i++) {
 			if (activetagmask & (curtag >> i))
 				break;
 		}
 		if ((curtag >> i) == 0) {
+			/* no tags behind curtag so find the last tag infront of it */
 			for (i=len; i>=0; i--) {
 				if (activetagmask & (1 << i))
 					break;
