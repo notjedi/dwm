@@ -12,7 +12,7 @@ static const unsigned int gappov    = 10;       /* vert outer gap between window
 static const int smartgaps          = 0;        /* 1 means no outer gap when there is only one window */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
-static const char *fonts[]          = { "JetBrainMono Nerd Font:size=10" };
+static const char *fonts[]          = { "JetBrainMono Nerd Font:size=10", "Noto Color Emoji:size=10" };
 static const char dmenufont[]       = "JetBrainMono Nerd Font:size=10";
 static const char col_gray1[]       = "#222222";
 static const char col_gray2[]       = "#444444";
@@ -40,6 +40,8 @@ static const Rule rules[] = {
 	{ "discord",			NULL,		NULL,						1 << 4,		  0,		   -1 },
 	{ "Spotify",			NULL,		NULL,						1 << 5,		  0,		   -1 },
 	{ "jetbrains-studio",	NULL,		NULL,						1 << 1,		  0,		   -1 },
+	{ "Gimp",     			NULL,       NULL,       				0,            1,           -1 },
+	{ "Polybar",     		NULL,       NULL,       				0,            1,           -1 },
 	{ NULL,					"win0",		NULL,						1 << 1,		  1,		   -1 },
 	{ NULL, 				NULL,		"Task Manager - Brave", 	0,			  1,		   -1 },
 	{ NULL,					NULL,		"Android Emulator",			1 << 1,		  1,		   -1 },
@@ -70,7 +72,7 @@ static const Layout layouts[] = {
 #define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
 
 /* commands */
-static const char *termcmd[]  = { TERMINAL, NULL };
+/* static const char *termcmd[]  = { TERMINAL, NULL }; */
 
 #include <X11/XF86keysym.h>
 
@@ -113,9 +115,9 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_q,      					quit,           		{0} },
 	{ MODKEY|ShiftMask,           	XK_space,  					setlayout,      		{0} },
 
-	{ 0, 							XF86XK_AudioMute,			spawn,					SHCMD("pamixer -t") },
-	{ 0, 							XF86XK_AudioRaiseVolume,	spawn,					SHCMD("pamixer --allow-boost -i 5") },
-	{ 0, 							XF86XK_AudioLowerVolume,	spawn,					SHCMD("pamixer --allow-boost -d 5") },
+	{ 0, 							XF86XK_AudioMute,			spawn,					SHCMD("pamixer -t; pkill -RTMIN+10 dwmblocks") },
+	{ 0, 							XF86XK_AudioRaiseVolume,	spawn,					SHCMD("pamixer --allow-boost -i 5; pkill -RTMIN+10 dwmblocks") },
+	{ 0, 							XF86XK_AudioLowerVolume,	spawn,					SHCMD("pamixer --allow-boost -d 5; pkill -RTMIN+10 dwmblocks") },
 	{ 0, 							XF86XK_AudioNext,			spawn,					SHCMD("playerctl next") },
 	{ 0, 							XF86XK_AudioPrev,			spawn,					SHCMD("playerctl previous") },
 	{ 0, 							XF86XK_AudioPlay,			spawn,					SHCMD("playerctl play-pause") },
@@ -175,9 +177,14 @@ static Button buttons[] = {
 	{ ClkLtSymbol,          0,              Button1,        setlayout,      {0} },
 	{ ClkLtSymbol,          0,              Button3,        setlayout,      {.v = &layouts[2]} },
 	{ ClkWinTitle,          0,              Button2,        zoom,           {0} },
+
 	{ ClkStatusText,        0,              Button1,        sigdwmblocks,   {.i = 1} },
 	{ ClkStatusText,        0,              Button2,        sigdwmblocks,   {.i = 2} },
 	{ ClkStatusText,        0,              Button3,        sigdwmblocks,   {.i = 3} },
+	{ ClkStatusText,        0,              Button4,        sigdwmblocks,   {.i = 4} },
+	{ ClkStatusText,        0,              Button5,        sigdwmblocks,   {.i = 5} },
+	{ ClkStatusText,		ShiftMask,		Button1,		sigdwmblocks,	{.i = 6} },
+
 	{ ClkClientWin,         MODKEY,         Button1,        movemouse,      {0} },
 	{ ClkClientWin,         MODKEY,         Button2,        togglefloating, {0} },
 	{ ClkClientWin,         MODKEY,         Button3,        resizemouse,    {0} },

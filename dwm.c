@@ -466,6 +466,7 @@ buttonpress(XEvent *e)
 			click = ClkLtSymbol;
 		else if (ev->x > (x = selmon->ww - TEXTW(stext) + lrpad)) {
 			click = ClkStatusText;
+
 			char *text = rawstext;
 			int i = -1;
 			char ch;
@@ -598,11 +599,11 @@ configurenotify(XEvent *e)
 
 	/* only update `activetagmask` if ev->type == MapRequest as  */
 	/* configurenotify is called a bunch of times even without a new client spawning */
-	if (e->type == MapRequest || activetagmask == selmon->tagset[selmon->seltags]) {
-		for (m = mons; m; m = m->next)
-			for (c = m->clients; c; c = c->next)
-				activetagmask |= c->tags;
-	}
+	/* if (e->type == MapRequest || activetagmask == selmon->tagset[selmon->seltags]) { */
+	for (m = mons; m; m = m->next)
+		for (c = m->clients; c; c = c->next)
+			activetagmask |= c->tags;
+	/* } */
 
 	/* TODO: updategeom handling sucks, needs to be simplified */
 	if (ev->window == root) {
