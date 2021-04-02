@@ -1,4 +1,4 @@
-void fibonacci(Monitor *m, int s) {
+void fibonacci(Monitor *m) {
   unsigned int i, n;
   int nx, ny, nw, nh;
   int oh, ov, ih, iv;
@@ -62,4 +62,4 @@ void fibonacci(Monitor *m, int s) {
   }
 }
 
-void dwindle(Monitor *m) { fibonacci(m, 1); }
+void dwindle(Monitor *m) { fibonacci(m); }

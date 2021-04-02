@@ -54,9 +54,8 @@ static const int resizehints = 1;    /* 1 means respect size hints in tiled resi
 static const Layout layouts[] = {
 	/* symbol     arrange function */
  	{ "[\\]",      dwindle },
-	{ "><>",      NULL },    /* no layout function means floating behavior */
-	{ "[M]",      monocle },
 	{ "[]=",      tile },    /* first entry is default */
+	{ "><>",      NULL },    /* no layout function means floating behavior */
 };
 
 /* key definitions */
@@ -83,12 +82,13 @@ static Key keys[] = {
 	{ MODKEY,                       XK_h,      					setmfact,       		{.f = -0.05 } },
 	{ MODKEY,                       XK_j,      					focusstack,     		{.i = +1 } },
 	{ MODKEY,                       XK_k,      					focusstack,     		{.i = -1 } },
+	{ MODKEY|ShiftMask,             XK_k,      					spawn,     				SHCMD("killprocess") },
 	{ MODKEY,                       XK_l,      					setmfact,       		{.f = +0.05 } },
 	{ MODKEY, 						XK_p,						spawn,					SHCMD("playerctl play-pause") },
 	{ MODKEY,                       XK_r,      					spawn,          		SHCMD("rofi -show drun -show-icons -lines 5 -width 30") },
 	{ MODKEY,             			XK_q,      					killclient,     		{0} },
-	{ MODKEY, 						XK_bracketleft,				spawn,					SHCMD("playerctl next") },
-	{ MODKEY, 						XK_bracketright,			spawn,					SHCMD("playerctl previous") },
+	{ MODKEY, 						XK_bracketleft,				spawn,					SHCMD("playerctl previous") },
+	{ MODKEY, 						XK_bracketright,			spawn,					SHCMD("playerctl next") },
 	{ MODKEY,             			XK_Return, 					spawn,          		SHCMD(TERMINAL) },
 	{ MODKEY,             			XK_space,  					togglefloating, 		{0} },
 
@@ -107,9 +107,8 @@ static Key keys[] = {
 	{ Mod1Mask|ShiftMask,           XK_Tab,    					shiftview,           	{.i = -1 } },
 
 	{ MODKEY,                       XK_w,      					setlayout,      		{.v = &layouts[0]} },
-	{ MODKEY,                       XK_s,      					setlayout,      		{.v = &layouts[1]} },
-	{ MODKEY|ShiftMask,             XK_f,      					setlayout,      		{.v = &layouts[2]} },
-	{ MODKEY,                       XK_t,      					setlayout,      		{.v = &layouts[3]} },
+	{ MODKEY,                       XK_t,      					setlayout,      		{.v = &layouts[1]} },
+	{ MODKEY,                       XK_s,      					setlayout,      		{.v = &layouts[2]} },
 
 	{ MODKEY|ShiftMask,             XK_q,      					quit,           		{0} },
 	{ MODKEY|ShiftMask,           	XK_space,  					setlayout,      		{0} },
