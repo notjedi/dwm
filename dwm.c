@@ -279,7 +279,7 @@ static int xerrorstart(Display *dpy, XErrorEvent *ee);
 static void zoom(const Arg *arg);
 
 /* variables */
-static const char broken[] = "broken";
+static const char broken[] = "nani???";
 static char stext[256];
 static char rawstext[256];
 static int dwmblockssig;
