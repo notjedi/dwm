@@ -202,9 +202,6 @@ static void focusin(XEvent *e);
 /* static void focusmon(const Arg *arg); */
 static void focusstack(const Arg *arg);
 static Atom getatomprop(Client *c, Atom prop);
-static int getdwmblockspid();
-static void getgaps(Monitor *m, int *oh, int *ov, int *ih, int *iv,
-                    unsigned int *nc);
 static int getrootptr(int *x, int *y);
 static long getstate(Window w);
 static int gettextprop(Window w, Atom atom, char *text, unsigned int size);
@@ -233,13 +230,6 @@ static void sendmon(Client *c, Monitor *m);
 static void setclientstate(Client *c, long state);
 static void setfocus(Client *c);
 static void setfullscreen(Client *c, int fullscreen);
-static void setgaps(int oh, int ov, int ih, int iv);
-static void incrgaps(const Arg *arg);
-static void incrogaps(const Arg *arg);
-static void incrohgaps(const Arg *arg);
-static void incrovgaps(const Arg *arg);
-static void togglegaps(const Arg *arg);
-static void defaultgaps(const Arg *arg);
 static void setlayout(const Arg *arg);
 static void setmfact(const Arg *arg);
 static void setup(void);
@@ -247,11 +237,9 @@ static void seturgent(Client *c, int urg);
 static void shiftview(const Arg *arg);
 static void showhide(Client *c);
 static void sigchld(int unused);
-static void sigdwmblocks(const Arg *arg);
 static void spawn(const Arg *arg);
 static void tag(const Arg *arg);
 /* static void tagmon(const Arg *arg); */
-static void tile(Monitor *);
 static void togglebar(const Arg *arg);
 static void togglefloating(const Arg *arg);
 static void togglefullscreen(const Arg *arg);
@@ -282,16 +270,12 @@ static void zoom(const Arg *arg);
 static const char broken[] = "nani???";
 static char stext[256];
 static char rawstext[256];
-static int dwmblockssig;
-pid_t dwmblockspid = 0;
 static int screen;
-static int sw, sh;         /* X display screen geometry width, height */
-static int bh, blw = 0;    /* bar geometry */
-static int enablegaps = 1; /* enables gaps, used by togglegaps */
-static int lrpad;          /* sum of left and right padding for text */
+static int sw, sh;      /* X display screen geometry width, height */
+static int bh, blw = 0; /* bar geometry */
+static int lrpad;       /* sum of left and right padding for text */
 static int (*xerrorxlib)(Display *, XErrorEvent *);
 static unsigned int numlockmask = 0;
-static unsigned int activetagmask = 1;
 static void (*handler[LASTEvent])(XEvent *) = {
     [ButtonPress] = buttonpress,
     [ClientMessage] = clientmessage,
@@ -317,7 +301,11 @@ static Monitor *mons, *selmon;
 static Window root, wmcheckwin;
 
 /* configuration, allows nested code to access above variables */
+#include "statuscmd.c"
+#include "vanitygaps.c"
+
 #include "config.h"
+#include "shiftview.c"
 
 /* compile-time check if all tags fit into an unsigned int bit array. */
 struct NumTags {
@@ -608,16 +596,6 @@ void configurenotify(XEvent *e) {
   Client *c;
   XConfigureEvent *ev = &e->xconfigure;
   int dirty;
-
-  /* only update `activetagmask` if ev->type == MapRequest as  */
-  /* configurenotify is called a bunch of times even without a new client
-   * spawning */
-  /* if (e->type == MapRequest || activetagmask ==
-   * selmon->tagset[selmon->seltags]) { */
-  for (m = mons; m; m = m->next)
-    for (c = m->clients; c; c = c->next)
-      activetagmask |= c->tags;
-  /* } */
 
   /* TODO: updategeom handling sucks, needs to be simplified */
   if (ev->window == root) {
@@ -933,38 +911,6 @@ Atom getatomprop(Client *c, Atom prop) {
     XFree(p);
   }
   return atom;
-}
-
-void getgaps(Monitor *m, int *oh, int *ov, int *ih, int *iv, unsigned int *nc) {
-  unsigned int n, oe, ie;
-#if PERTAG_PATCH
-  oe = ie = selmon->pertag->enablegaps[selmon->pertag->curtag];
-#else
-  oe = ie = enablegaps;
-#endif // PERTAG_PATCH
-  Client *c;
-
-  for (n = 0, c = nexttiled(m->clients); c; c = nexttiled(c->next), n++)
-    ;
-  if (smartgaps && n == 1) {
-    oe = 0; // outer gaps disabled when only one client
-  }
-
-  *oh = m->gappoh * oe; // outer horizontal gap
-  *ov = m->gappov * oe; // outer vertical gap
-  *ih = m->gappih * ie; // inner horizontal gap
-  *iv = m->gappiv * ie; // inner vertical gap
-  *nc = n;              // number of clients
-}
-
-int getdwmblockspid() {
-  char buf[16];
-  FILE *fp = popen("pidof -s dwmblocks", "r");
-  fgets(buf, sizeof(buf), fp);
-  pid_t pid = strtoul(buf, NULL, 10);
-  pclose(fp);
-  dwmblockspid = pid;
-  return pid != 0 ? 0 : -1;
 }
 
 int getrootptr(int *x, int *y) {
@@ -1532,50 +1478,6 @@ void setfullscreen(Client *c, int fullscreen) {
   }
 }
 
-void setgaps(int oh, int ov, int ih, int iv) {
-  if (oh < 0)
-    oh = 0;
-  if (ov < 0)
-    ov = 0;
-  if (ih < 0)
-    ih = 0;
-  if (iv < 0)
-    iv = 0;
-
-  selmon->gappoh = oh;
-  selmon->gappov = ov;
-  selmon->gappih = ih;
-  selmon->gappiv = iv;
-  arrange(selmon);
-}
-
-void togglegaps(const Arg *arg) {
-  enablegaps = !enablegaps;
-  arrange(selmon);
-}
-
-void defaultgaps(const Arg *arg) { setgaps(gappoh, gappov, gappih, gappiv); }
-
-void incrgaps(const Arg *arg) {
-  setgaps(selmon->gappoh + arg->i, selmon->gappov + arg->i,
-          selmon->gappih + arg->i, selmon->gappiv + arg->i);
-}
-
-void incrogaps(const Arg *arg) {
-  setgaps(selmon->gappoh + arg->i, selmon->gappov + arg->i, selmon->gappih,
-          selmon->gappiv);
-}
-
-void incrohgaps(const Arg *arg) {
-  setgaps(selmon->gappoh + arg->i, selmon->gappov, selmon->gappih,
-          selmon->gappiv);
-}
-
-void incrovgaps(const Arg *arg) {
-  setgaps(selmon->gappoh, selmon->gappov + arg->i, selmon->gappih,
-          selmon->gappiv);
-}
-
 void setlayout(const Arg *arg) {
   if (!arg || !arg->v || arg->v != selmon->lt[selmon->sellt])
     selmon->sellt ^= 1;
@@ -1619,7 +1521,9 @@ void setup(void) {
   if (!drw_fontset_create(drw, fonts, LENGTH(fonts)))
     die("No fonts could be loaded.");
   lrpad = drw->fonts->h;
-  bh = drw->fonts->h + 2;
+  /* set custom bar height */
+  /* bh = drw->fonts->h + 2; */ /* default */
+  bh = 18;
   updategeom();
   /* init atoms */
   utf8string = XInternAtom(dpy, "UTF8_STRING", False);
@@ -1683,54 +1587,6 @@ void seturgent(Client *c, int urg) {
   XFree(wmh);
 }
 
-void shiftview(const Arg *arg) {
-
-  /* TODO: more elegant way to do this? */
-  Arg shift;
-  int i = 0, len = LENGTH(tags) - 1;
-  unsigned int curtag = selmon->tagset[selmon->seltags], temp = (1 << len),
-               seltag = 0;
-
-  /* no other tags active so return */
-  if (activetagmask == selmon->tagset[selmon->seltags])
-    return;
-
-  if (arg->i > 0) {
-    /* moving to next tag */
-    for (i = 1; !((curtag << i) & temp); i++) {
-      if (activetagmask & (curtag << i))
-        break;
-    }
-    if ((curtag << i) & temp) {
-      /* no tags infront of curtag so find the last tag behind it */
-      for (i = 0; i <= len; i++) {
-        if (activetagmask & (1 << i))
-          break;
-      }
-      seltag = (1 << i);
-    } else
-      seltag = (curtag << i);
-  } else {
-    /* moving to prev tag */
-    for (i = 1; curtag >> i; i++) {
-      if (activetagmask & (curtag >> i))
-        break;
-    }
-    if ((curtag >> i) == 0) {
-      /* no tags behind curtag so find the last tag infront of it */
-      for (i = len; i >= 0; i--) {
-        if (activetagmask & (1 << i))
-          break;
-      }
-      seltag = (1 << i);
-    } else
-      seltag = (curtag >> i);
-  }
-
-  shift.ui = seltag;
-  view(&shift);
-}
-
 void showhide(Client *c) {
   if (!c)
     return;
@@ -1753,21 +1609,6 @@ void sigchld(int unused) {
     die("can't install SIGCHLD handler:");
   while (0 < waitpid(-1, NULL, WNOHANG))
     ;
-}
-
-void sigdwmblocks(const Arg *arg) {
-  union sigval sv;
-  sv.sival_int = (dwmblockssig << 8) | arg->i;
-  if (!dwmblockspid)
-    if (getdwmblockspid() == -1)
-      return;
-
-  if (sigqueue(dwmblockspid, SIGUSR1, sv) == -1) {
-    if (errno == ESRCH) {
-      if (!getdwmblockspid())
-        sigqueue(dwmblockspid, SIGUSR1, sv);
-    }
-  }
 }
 
 void spawn(const Arg *arg) {
@@ -1797,40 +1638,6 @@ void tag(const Arg *arg) {
 /* 		return; */
 /* 	sendmon(selmon->sel, dirtomon(arg->i)); */
 /* } */
-
-void tile(Monitor *m) {
-  unsigned int i, n, h, r, oe = enablegaps, ie = enablegaps, mw, my, ty;
-  Client *c;
-
-  for (n = 0, c = nexttiled(m->clients); c; c = nexttiled(c->next), n++)
-    ;
-  if (n == 0)
-    return;
-
-  if (smartgaps == n) {
-    oe = 0; // outer gaps disabled
-  }
-
-  if (n > m->nmaster)
-    mw = m->nmaster ? (m->ww + m->gappiv * ie) * m->mfact : 0;
-  else
-    mw = m->ww - 2 * m->gappov * oe + m->gappiv * ie;
-  for (i = 0, my = ty = m->gappoh * oe, c = nexttiled(m->clients); c;
-       c = nexttiled(c->next), i++)
-    if (i < m->nmaster) {
-      r = MIN(n, m->nmaster) - i;
-      h = (m->wh - my - m->gappoh * oe - m->gappih * ie * (r - 1)) / r;
-      resize(c, m->wx + m->gappov * oe, m->wy + my,
-             mw - (2 * c->bw) - m->gappiv * ie, h - (2 * c->bw), 0);
-      my += HEIGHT(c) + m->gappih * ie;
-    } else {
-      r = n - i;
-      h = (m->wh - ty - m->gappoh * oe - m->gappih * ie * (r - 1)) / r;
-      resize(c, m->wx + mw + m->gappov * oe, m->wy + ty,
-             m->ww - mw - (2 * c->bw) - 2 * m->gappov * oe, h - (2 * c->bw), 0);
-      ty += HEIGHT(c) + m->gappih * ie;
-    }
-}
 
 void togglebar(const Arg *arg) {
   selmon->showbar = !selmon->showbar;
@@ -1924,12 +1731,8 @@ void unmapnotify(XEvent *e) {
   if ((c = wintoclient(ev->window))) {
     if (ev->send_event)
       setclientstate(c, WithdrawnState);
-    else {
+    else
       unmanage(c, 0);
-      activetagmask = selmon->seltags;
-      for (Client *c = selmon->clients; c; c = c->next)
-        activetagmask |= c->tags;
-    }
   }
 }
 

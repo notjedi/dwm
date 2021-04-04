@@ -5,14 +5,10 @@
 /* appearance */
 static const unsigned int borderpx  = 2;        /* border pixel of windows */
 static const unsigned int snap      = 32;       /* snap pixel */
-static const unsigned int gappih    = 10;       /* horiz inner gap between windows */
-static const unsigned int gappiv    = 10;       /* vert inner gap between windows */
-static const unsigned int gappoh    = 10;       /* horiz outer gap between windows and screen edge */
-static const unsigned int gappov    = 10;       /* vert outer gap between windows and screen edge */
-static const int smartgaps          = 0;        /* 1 means no outer gap when there is only one window */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
-static const char *fonts[]          = { "JetBrainMono Nerd Font:size=9", "Noto Color Emoji:pixelsize=12:antialias=true:autohint=true" };
+
+static const char *fonts[]          = { "Monospace:size=9", "Noto Color Emoji:pixelsize=12:antialias=true:autohint=true" };
 static const char normbgcolor[]       = "#0c0d12";
 static const char normfgcolor[]       = "#ffffff";
 static const char normbordercolor[]   = "#4C566A";
@@ -54,7 +50,6 @@ static const float mfact     = 0.50; /* factor of master area size [0.05..0.95] 
 static const int nmaster     = 1;    /* number of clients in master area */
 static const int resizehints = 1;    /* 1 means respect size hints in tiled resizals */
 
-#include "fibonacci.c"
 static const Layout layouts[] = {
 	/* symbol     arrange function */
  	{ "[\\]",      dwindle },
