@@ -303,7 +303,6 @@ static Window root, wmcheckwin;
 /* configuration, allows nested code to access above variables */
 #include "statuscmd.c"
 #include "vanitygaps.c"
-
 #include "config.h"
 #include "shiftview.c"
 
