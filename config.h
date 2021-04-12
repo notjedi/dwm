@@ -121,6 +121,11 @@ static Key keys[] = {
 	{ 0, 							XF86XK_AudioPause,			spawn,					SHCMD("playerctl play-pause") },
 	{ 0, 							XF86XK_AudioStop,			spawn,					SHCMD("playerctl stop") },
 	
+	{ MODKEY,                       XK_y,      					spawn,     				SHCMD("maim -s $HDD/screenshots/$(date +'%Y-%m-%d-%I-%M-%S').png") }, /* selct and save */
+	{ MODKEY|ShiftMask,             XK_y,      				    spawn,     				SHCMD("maim -s | xclip -selection clipboard -t image/png") }, /* selct and copy to clipboard */
+	{ MODKEY|Mod1Mask,              XK_y,      				    spawn,     				SHCMD("maim -i $(xdotool getactivewindow) $HDD/screenshots/$(date +'%Y-%m-%d-%I-%M-%S').png") }, /* save screeshot of active window */
+	{ MODKEY|Mod1Mask|ShiftMask,    XK_y,      				    spawn,     				SHCMD("maim -i $(xdotool getactivewindow) | xclip -selection clipboard -target image/png") }, /* copy screeshot of active window to clipboard */
+	{ 0,                            XK_Print,      				spawn,     				SHCMD("maim $HDD/screenshots/$(date +'%Y-%m-%d-%I-%M-%S').png") }, /* save screeshot of whole screen */
 
 	TAGKEYS(                        XK_1,      	                						0)
 	TAGKEYS(                        XK_2,      	                						1)
@@ -139,7 +144,6 @@ static Key keys[] = {
 	/* mod + p */
 	/* mod + v */
 	/* mod + x */
-	/* mod + y - flameshot or maim */
 	/* mod + , - mpc */
 	/* mod + . - mpc */
 	/* mod + braketleft - general audio prev */
