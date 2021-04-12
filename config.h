@@ -70,12 +70,16 @@ static const Layout layouts[] = {
 
 /* commands */
 /* static const char *termcmd[]  = { TERMINAL, NULL }; */
+static const char scratchpadname[] = "Scratchpad";
+static const char *scratchpadcmd[] = { "st", "-t", scratchpadname, "-g", "120x34", NULL };
+/* static const char *scratchpadcmd[] = { TERMINAL, "-t", scratchpadname, "-g", "120x34", NULL }; */
 
 #include <X11/XF86keysym.h>
 
 static Key keys[] = {
 	/* modifier                     key        					function        		argument */
 	{ MODKEY,                       XK_b,      					togglebar,      		{0} },
+	{ MODKEY,                       XK_d,                       togglescratch,          {.v = scratchpadcmd } },
 	{ MODKEY,             			XK_e,	   					zoom,           		{0} },
 	{ MODKEY,                       XK_f,      					togglefullscreen,		{0} },
 	{ MODKEY,                       XK_h,      					setmfact,       		{.f = -0.05 } },
