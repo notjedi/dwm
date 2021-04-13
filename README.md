@@ -16,9 +16,8 @@ Patches
 * actualfullscreen
 * hide-vacant-gaps
 * statuscmd-signal patch for dwmblocks
+* floating-center - custom patch center all floating windows
 * shiftview - custom patch to only move only through active tags
-* floating-center - custom patch to make all center all floating windows
-
 
 Installation
 ------------
