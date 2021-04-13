@@ -10,14 +10,14 @@ In order to build dwm you need the Xlib header files.
 
 Patches
 ------------
-* fibonacci
-* scratchpad
-* vanitygaps
-* actualfullscreen
-* hide-vacant-gaps
-* statuscmd-signal patch for dwmblocks
-* floating-center - custom patch center all floating windows
-* shiftview - custom patch to only move only through active tags
+* [fibonacci](https://dwm.suckless.org/patches/fibonacci/)
+* [scratchpad](https://dwm.suckless.org/patches/scratchpad/)
+* [vanitygaps](https://dwm.suckless.org/patches/vanitygaps/)
+* [actualfullscreen](https://dwm.suckless.org/patches/actualfullscreen/)
+* [hide-vacant-gaps](https://dwm.suckless.org/patches/hide_vacant_tags/)
+* [statuscmd-signal](https://dwm.suckless.org/patches/statuscmd/) - patch for dwmblocks
+* [floating-center](https://github.com/jedi2610/dwm/blob/main/patches/dwm-floating-center.diff) - custom patch to center all floating windows
+* [shiftview](https://github.com/jedi2610/dwm/blob/fab6892ffd4a2fa168d485f0c85fb99d8aff467a/dwm.c#L1601) - custom patch to only move only through active tags
 
 Installation
 ------------
@@ -39,7 +39,7 @@ Add the following line to your .xinitrc to start dwm using startx:
 In order to connect dwm to a specific display, make sure that
 the DISPLAY environment variable is set correctly, e.g:
 
-    DISPLAY=foo.bar:1 exec dwm
+    DISPLAY=foo.bar:1 ssh-agent dwm
 
 (This will start dwm on display :1 of the host foo.bar.)
 
