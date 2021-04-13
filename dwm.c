@@ -305,9 +305,9 @@ static Window root, wmcheckwin;
 #include "statuscmd.c"
 #include "vanitygaps.c"
 #include "config.h"
-#include "shiftview.c"
 
 static unsigned int scratchtag = 1 << LENGTH(tags);
+#include "shiftview.c"
 
 /* compile-time check if all tags fit into an unsigned int bit array. */
 struct NumTags {
