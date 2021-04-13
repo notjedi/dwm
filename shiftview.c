@@ -8,8 +8,10 @@ static void shiftview(const Arg *arg) {
     unsigned int tagmask = 0;
     int NUMTAGS = LENGTH(tags);
 
-    for (c = selmon->clients; c; c = c->next)
-        tagmask |= c->tags;
+    for (c = selmon->clients; c; c = c->next) {
+        if (strcmp(c->name, scratchpadname))
+            tagmask |= c->tags;
+    }
 
     shifted.ui = selmon->tagset[selmon->seltags];
     if (arg->i > 0) // left circular shift

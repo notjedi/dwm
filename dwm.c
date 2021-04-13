@@ -1691,9 +1691,7 @@ void toggletag(const Arg *arg) {
   }
 }
 
-void
-togglescratch(const Arg *arg)
-{
+void togglescratch(const Arg *arg) {
 	Client *c;
 	unsigned int found = 0;
 
