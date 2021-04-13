@@ -38,10 +38,9 @@ static const Rule rules[] = {
 	{ "discord",			NULL,		NULL,						1 << 4,		  0,		   -1 },
 	{ "Spotify",			NULL,		NULL,						1 << 5,		  0,		   -1 },
 	{ "jetbrains-studio",	NULL,		NULL,						1 << 1,		  0,		   -1 },
-	{ "Gimp",     			NULL,       NULL,       				0,            1,           -1 },
 	{ "Polybar",     		NULL,       NULL,       				0,            1,           -1 },
 	{ NULL,					"win0",		NULL,						1 << 1,		  1,		   -1 },
-	{ NULL, 				NULL,		"Task Manager - Brave", 	0,			  1,		   -1 },
+	{ NULL, 				NULL,		"Task Manager", 	        0,			  1,		   -1 },
 	{ NULL,					NULL,		"Android Emulator",			1 << 1,		  1,		   -1 },
 };
 
@@ -144,24 +143,17 @@ static Key keys[] = {
 	/* mod + a */
 	/* mod + c */
 	/* mod + d */
-	/* mod + g */
-	/* mod + p */
+	/* mod + g - greenclip */
 	/* mod + v */
 	/* mod + x */
 	/* mod + , - mpc */
 	/* mod + . - mpc */
-	/* mod + braketleft - general audio prev */
-	/* mod + braketright - general audio next */
 	/* mod + shift + d */
 	/* mod + shift + j */
 	/* mod + shift + k */
-	/* print key */
-	/* shift + print key */
 
 	/* TODO: mod + shift + x for slock? */
 	/* TODO: use xcape to map right shift to ctrl + super? */
-	/* TODO: cycle layouts patch */
-	/* TODO: vanity gaps for dwindle layout */
 	/* { MODKEY,                       XK_comma,  	focusmon,       		{.i = -1 } }, */
 	/* { MODKEY,                       XK_period, 	focusmon,       		{.i = +1 } }, */
 	/* { MODKEY|ShiftMask,             XK_comma,  	tagmon,         		{.i = -1 } }, */
