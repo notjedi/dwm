@@ -14,14 +14,14 @@ Patches
 * [scratchpad](https://dwm.suckless.org/patches/scratchpad/)
 * [vanitygaps](https://dwm.suckless.org/patches/vanitygaps/)
 * [actualfullscreen](https://dwm.suckless.org/patches/actualfullscreen/)
-* [hide-vacant-gaps](https://dwm.suckless.org/patches/hide_vacant_tags/)
+* [hide-vacant-tags](https://dwm.suckless.org/patches/hide_vacant_tags/)
 * [statuscmd-signal](https://dwm.suckless.org/patches/statuscmd/) - patch for dwmblocks
 * [floating-center](https://github.com/jedi2610/dwm/blob/main/patches/dwm-floating-center.diff) - custom patch to center all floating windows
 * [shiftview](https://github.com/jedi2610/dwm/blob/fab6892ffd4a2fa168d485f0c85fb99d8aff467a/dwm.c#L1601) - custom patch to only move only through active tags
 
 Installation
 ------------
-Edit config.mk to match your local setup (dwm is installed into
+Edit `config.mk` to match your local setup (dwm is installed into
 the `/usr/local` namespace by default).
 
 Afterwards enter the following command to build and install dwm (if
@@ -32,7 +32,7 @@ necessary as root):
 
 Running dwm
 -----------
-Add the following line to your .xinitrc to start dwm using startx:
+Add the following line to your `.xinitrc` to start dwm using startx:
 
     ssh-agent dwm
 
