@@ -1,6 +1,6 @@
 /* See LICENSE file for copyright and license detailsfsdaf */
 
-#define TERMINAL "alacritty"
+#define TERMINAL "st"
 
 /* appearance */
 static const unsigned int borderpx  = 2;        /* border pixel of windows */
@@ -8,18 +8,38 @@ static const unsigned int snap      = 32;       /* snap pixel */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
 
-static const char *fonts[]          = { "Monospace:size=9", "Noto Color Emoji:pixelsize=12:antialias=true:autohint=true" };
-static const char normbgcolor[]       = "#0c0d12";
-static const char normfgcolor[]       = "#ffffff";
-static const char normbordercolor[]   = "#4C566A";
-static const char selbgcolor[]        = "#ffffff";
-static const char selfgcolor[]        = "#8542ff";
-static const char selbordercolor[]    = "#FB94FF";
-static const char *colors[][3]      = {
-	/*               fg         bg         border   */
-	[SchemeNorm] = { normfgcolor, normbgcolor, normbordercolor},
-	[SchemeSel]  = { selbgcolor, selfgcolor,  selbordercolor},
+
+static const char *fonts[]          = { "Monospace:size=9", "AkrutiTml1:size=9", "Noto Color Emoji:pixelsize=12:antialias=true:autohint=true" };
+/* #include "/home/jedi/.cache/wal/colors-wal-dwm.h" */
+static char normbgcolor[]       = "#0c0d12";
+static char normfgcolor[]       = "#ffffff";
+static char normbordercolor[]   = "#4C566A";
+static char selbgcolor[]        = "#ffffff";
+static char selfgcolor[]        = "#8542ff";
+static char selbordercolor[]    = "#FB94FF";
+
+static char norm_fg[] = "#deeaf6";
+static char norm_bg[] = "#4d4978";
+static char norm_border[] = "#9ba3ac";
+static char sel_fg[] = "#deeaf6";
+static char sel_bg[] = "#90CBFE";
+static char sel_border[] = "#deeaf6";
+/* static char urg_fg[] = "#deeaf6"; */
+/* static char urg_bg[] = "#C9B0EA"; */
+/* static char urg_border[] = "#C9B0EA"; */
+
+static char *colors[][3]      = {
+    /*               fg           bg         border                         */
+    [SchemeNorm] = { norm_fg,     norm_bg,   norm_border }, // unfocused wins
+    [SchemeSel]  = { sel_fg,      sel_bg,    sel_border },  // the focused win
+    [SchemeUrg] =  { urg_fg,      urg_bg,    urg_border },
 };
+/* static char *colors[][3]      = { */
+/* 	*               fg         bg         border   * */
+/* 	[SchemeNorm] = { normfgcolor, normbgcolor, normbordercolor}, */
+/* 	[SchemeSel]  = { selbgcolor, selfgcolor,  selbordercolor}, */
+/* 	[SchemeUrg]  = { selbgcolor, selfgcolor,  selbordercolor}, */
+/* }; */
 
 /* tagging */
 /* static const char *tags[] = { "", "", "", "", "", "" }; */
@@ -91,6 +111,8 @@ static Key keys[] = {
 	{ MODKEY,             			XK_q,      					killclient,     		{0} },
 	{ MODKEY, 						XK_bracketleft,				spawn,					SHCMD("playerctl previous") },
 	{ MODKEY, 						XK_bracketright,			spawn,					SHCMD("playerctl next") },
+	{ MODKEY,                       XK_m,      					spawn,     				SHCMD("pamixer -t; pkill -RTMIN+10 dwmblocks") },
+	{ MODKEY,                       XK_g,      				    xrdb,     				{.v = NULL} },
 	{ MODKEY,             			XK_Return, 					spawn,          		SHCMD(TERMINAL) },
 	{ MODKEY,             			XK_space,  					togglefloating, 		{0} },
 
@@ -153,7 +175,6 @@ static Key keys[] = {
 	/* mod + shift + k */
 
 	/* TODO: mod + shift + x for slock? */
-	/* TODO: use xcape to map right shift to ctrl + super? */
 	/* { MODKEY,                       XK_comma,  	focusmon,       		{.i = -1 } }, */
 	/* { MODKEY,                       XK_period, 	focusmon,       		{.i = +1 } }, */
 	/* { MODKEY|ShiftMask,             XK_comma,  	tagmon,         		{.i = -1 } }, */
