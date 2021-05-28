@@ -18,28 +18,18 @@ static char selbgcolor[]        = "#ffffff";
 static char selfgcolor[]        = "#8542ff";
 static char selbordercolor[]    = "#FB94FF";
 
-static char norm_fg[] = "#deeaf6";
-static char norm_bg[] = "#4d4978";
-static char norm_border[] = "#9ba3ac";
-static char sel_fg[] = "#deeaf6";
-static char sel_bg[] = "#90CBFE";
-static char sel_border[] = "#deeaf6";
-/* static char urg_fg[] = "#deeaf6"; */
-/* static char urg_bg[] = "#C9B0EA"; */
-/* static char urg_border[] = "#C9B0EA"; */
+/* static char normfgcolor[] = "#deeaf6"; */
+/* static char normbgcolor[] = "#4d4978"; */
+/* static char normbordercolor[] = "#9ba3ac"; */
+/* static char selfgcolor[] = "#deeaf6"; */
+/* static char selbgcolor[] = "#90CBFE"; */
+/* static char selbordercolor[] = "#deeaf6"; */
 
 static char *colors[][3]      = {
-    /*               fg           bg         border                         */
-    [SchemeNorm] = { norm_fg,     norm_bg,   norm_border }, // unfocused wins
-    [SchemeSel]  = { sel_fg,      sel_bg,    sel_border },  // the focused win
-    [SchemeUrg] =  { urg_fg,      urg_bg,    urg_border },
+	/* *               fg         bg         border   * */
+	[SchemeNorm] = { normfgcolor, normbgcolor, normbordercolor},
+	[SchemeSel]  = { selbgcolor, selfgcolor,  selbordercolor},
 };
-/* static char *colors[][3]      = { */
-/* 	*               fg         bg         border   * */
-/* 	[SchemeNorm] = { normfgcolor, normbgcolor, normbordercolor}, */
-/* 	[SchemeSel]  = { selbgcolor, selfgcolor,  selbordercolor}, */
-/* 	[SchemeUrg]  = { selbgcolor, selfgcolor,  selbordercolor}, */
-/* }; */
 
 /* tagging */
 /* static const char *tags[] = { "", "", "", "", "", "" }; */

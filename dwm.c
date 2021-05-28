@@ -79,7 +79,7 @@
 
 /* enums */
 enum { CurNormal, CurResize, CurMove, CurLast }; /* cursor */
-enum { SchemeNorm, SchemeSel, SchemeUrg };                  /* color schemes */
+enum { SchemeNorm, SchemeSel };                  /* color schemes */
 enum {
   NetSupported,
   NetWMName,
@@ -1079,19 +1079,19 @@ void loadxrdb()
         /* XRDB_LOAD_COLOR("dwm.color14", selbgcolor); */
         /* XRDB_LOAD_COLOR("dwm.color12", selbordercolor); */
 
-        /* XRDB_LOAD_COLOR("dwm.color7", normfgcolor); */
-        /* XRDB_LOAD_COLOR("dwm.color4", normbgcolor); */
-        /* XRDB_LOAD_COLOR("dwm.color8", normbordercolor); */
-        /* XRDB_LOAD_COLOR("dwm.color7", selfgcolor); */
-        /* XRDB_LOAD_COLOR("dwm.color6", selbgcolor); */
-        /* XRDB_LOAD_COLOR("dwm.color7", selbordercolor); */
+        XRDB_LOAD_COLOR("dwm.color7", normfgcolor);
+        XRDB_LOAD_COLOR("dwm.color4", normbgcolor);
+        XRDB_LOAD_COLOR("dwm.color8", normbordercolor);
+        XRDB_LOAD_COLOR("dwm.color7", selfgcolor);
+        XRDB_LOAD_COLOR("dwm.color6", selbgcolor);
+        XRDB_LOAD_COLOR("dwm.color7", selbordercolor);
 
-        XRDB_LOAD_COLOR("dwm.normbordercolor", normbordercolor);
-        XRDB_LOAD_COLOR("dwm.normbgcolor", normbgcolor);
-        XRDB_LOAD_COLOR("dwm.normfgcolor", normfgcolor);
-        XRDB_LOAD_COLOR("dwm.selbordercolor", selbordercolor);
-        XRDB_LOAD_COLOR("dwm.selbgcolor", selbgcolor);
-        XRDB_LOAD_COLOR("dwm.selfgcolor", selfgcolor);
+        /* XRDB_LOAD_COLOR("dwm.normbordercolor", normbordercolor); */
+        /* XRDB_LOAD_COLOR("dwm.normbgcolor", normbgcolor); */
+        /* XRDB_LOAD_COLOR("dwm.normfgcolor", normfgcolor); */
+        /* XRDB_LOAD_COLOR("dwm.selbordercolor", selbordercolor); */
+        /* XRDB_LOAD_COLOR("dwm.selbgcolor", selbgcolor); */
+        /* XRDB_LOAD_COLOR("dwm.selfgcolor", selfgcolor); */
       }
     }
   }
