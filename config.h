@@ -9,7 +9,9 @@ static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
 
 
-static const char *fonts[]          = { "Monospace:size=9", "AkrutiTml1:size=9", "Noto Color Emoji:pixelsize=12:antialias=true:autohint=true" };
+static const char *fonts[]          = { "JetBrainsMono Nerd Font:size=9:style=Bold:antialias=true:autohint=true", 
+                                        "AkrutiTml1:size=9:style=Bold:antialias=true:autohint=true",
+                                        "Noto Color Emoji:pixelsize=12:antialias=true:autohint=true" };
 /* #include "/home/jedi/.cache/wal/colors-wal-dwm.h" */
 static char normbgcolor[]       = "#0c0d12";
 static char normfgcolor[]       = "#ffffff";
@@ -26,9 +28,9 @@ static char selbordercolor[]    = "#FB94FF";
 /* static char selbordercolor[] = "#deeaf6"; */
 
 static char *colors[][3]      = {
-	/* *               fg         bg         border   * */
-	[SchemeNorm] = { normfgcolor, normbgcolor, normbordercolor},
-	[SchemeSel]  = { selbgcolor, selfgcolor,  selbordercolor},
+	/* *               fg           bg              border   * */
+	[SchemeNorm] = { normfgcolor,   normbgcolor,    normbordercolor},
+	[SchemeSel]  = { selfgcolor,    selbgcolor,     selbordercolor},
 };
 
 /* tagging */
@@ -104,6 +106,7 @@ static Key keys[] = {
 	{ MODKEY,                       XK_m,      					spawn,     				SHCMD("pamixer -t; pkill -RTMIN+10 dwmblocks") },
 	{ MODKEY,                       XK_g,      				    xrdb,     				{.v = NULL} },
 	{ MODKEY,             			XK_Return, 					spawn,          		SHCMD(TERMINAL) },
+	{ MODKEY|ShiftMask,             XK_Return, 					spawn,          		SHCMD("alacritty") },
 	{ MODKEY,             			XK_space,  					togglefloating, 		{0} },
 
 	{ MODKEY|Mod1Mask,              XK_h,      					incrgaps,       		{.i = +1 } },
@@ -136,11 +139,12 @@ static Key keys[] = {
 	{ 0, 							XF86XK_AudioPause,			spawn,					SHCMD("playerctl play-pause") },
 	{ 0, 							XF86XK_AudioStop,			spawn,					SHCMD("playerctl stop") },
 	
-	{ MODKEY,                       XK_y,      					spawn,     				SHCMD("maim -s $HDD/screenshots/$(date +'%Y-%m-%d-%I-%M-%S').png") }, /* selct and save */
-	{ MODKEY|ShiftMask,             XK_y,      				    spawn,     				SHCMD("maim -s | xclip -selection clipboard -t image/png") }, /* selct and copy to clipboard */
-	{ MODKEY|Mod1Mask,              XK_y,      				    spawn,     				SHCMD("maim -i $(xdotool getactivewindow) $HDD/screenshots/$(date +'%Y-%m-%d-%I-%M-%S').png") }, /* save screeshot of active window */
-	{ MODKEY|Mod1Mask|ShiftMask,    XK_y,      				    spawn,     				SHCMD("maim -i $(xdotool getactivewindow) | xclip -selection clipboard -target image/png") }, /* copy screeshot of active window to clipboard */
-	{ 0,                            XK_Print,      				spawn,     				SHCMD("maim $HDD/screenshots/$(date +'%Y-%m-%d-%I-%M-%S').png") }, /* save screeshot of whole screen */
+	{ MODKEY,                       XK_y,      					spawn,     				SHCMD("maim --noopengl -s $HDD/screenshots/$(date +'%Y-%m-%d-%I-%M-%S').png") }, /* selct and save */
+	{ MODKEY|ShiftMask,             XK_y,      				    spawn,     				SHCMD("maim --noopengl -s | xclip -selection clipboard -t image/png") }, /* selct and copy to clipboard */
+	{ MODKEY|Mod1Mask,              XK_y,      				    spawn,     				SHCMD("maim --noopengl -i $(xdotool getactivewindow) $HDD/screenshots/$(date +'%Y-%m-%d-%I-%M-%S').png") }, /* save screeshot of active window */
+	{ MODKEY|Mod1Mask|ShiftMask,    XK_y,      				    spawn,     				SHCMD("maim --noopengl -i $(xdotool getactivewindow) | xclip -selection clipboard -target image/png") }, /* copy screeshot of active window to clipboard */
+	{ MODKEY,                       XK_o,      				    spawn,     				SHCMD("maim --noopengl $HDD/screenshots/$(date +'%Y-%m-%d-%I-%M-%S').png") }, /* save screeshot of whole screen */
+	{ MODKEY|ShiftMask,             XK_o,      				    spawn,     				SHCMD("maim --noopengl | xclip -selection clipboard -t image/png") },
 
 	TAGKEYS(                        XK_1,      	                						0)
 	TAGKEYS(                        XK_2,      	                						1)
