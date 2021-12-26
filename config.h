@@ -44,14 +44,11 @@ static const Rule rules[] = {
 	 *	WM_NAME(STRING) = title
 	 */
 	/* class      			instance    title       				tags mask     isfloating   monitor */
-	/* { "Brave-browser", 		NULL, 		NULL,						1 << 2,		  0,		   -1 }, */
-	{ "Brave-browser", 		NULL, 		NULL,						0,		  0,		   -1 },
-	{ "discord",			NULL,		NULL,						1 << 4,		  0,		   -1 },
-	{ "jetbrains-studio",	NULL,		NULL,						1 << 1,		  0,		   -1 },
-	{ "Polybar",     		NULL,       NULL,       				0,            1,           -1 },
-	{ NULL,					"win0",		NULL,						1 << 1,		  1,		   -1 },
-	{ NULL, 				NULL,		"Task Manager", 	        0,			  1,		   -1 },
-	{ NULL,					NULL,		"Android Emulator",			1 << 1,		  1,		   -1 },
+	/* { "Polybar",     		NULL,       NULL,       				0,            1,           -1 }, */
+	{ NULL,	                "jetbrains-studio",             NULL,		                1 << 1,		  0,		   -1 },
+	{ NULL,					NULL,		                    "win0",						1 << 1,		  1,		   -1 },
+	{ NULL, 				NULL,		                    "Task Manager", 	        0,			  1,		   -1 },
+	{ NULL,					NULL,		                    "Android Emulator",			1 << 1,		  1,		   -1 },
 };
 
 /* layout(s) */

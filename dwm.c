@@ -1655,7 +1655,7 @@ static void shiftview(const Arg *arg) {
     Client *c;
     unsigned int tagmask = 0;
     int NUMTAGS = LENGTH(tags);
-    
+
     for (c = selmon->clients; c; c = c->next)
         if (strcmp(c->name, scratchpadname))
             tagmask |= c->tags;
