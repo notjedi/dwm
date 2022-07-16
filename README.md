@@ -16,8 +16,8 @@ Patches
 * [actualfullscreen](https://dwm.suckless.org/patches/actualfullscreen/)
 * [hide-vacant-tags](https://dwm.suckless.org/patches/hide_vacant_tags/)
 * [statuscmd-signal](https://dwm.suckless.org/patches/statuscmd/) - patch for dwmblocks
-* [floating-center](https://github.com/jedi2610/dwm/blob/main/patches/dwm-floating-center.diff) - custom patch to center all floating windows
-* [shiftview](https://github.com/jedi2610/dwm/blob/fab6892ffd4a2fa168d485f0c85fb99d8aff467a/dwm.c#L1601) - custom patch to only move only through active tags
+* [floating-center](https://github.com/notjedi/dwm/blob/main/patches/dwm-floating-center.diff) - custom patch to center all floating windows
+* [shiftview](https://github.com/notjedi/dwm/blob/fab6892ffd4a2fa168d485f0c85fb99d8aff467a/dwm.c#L1601) - custom patch to only move only through active tags
 
 Installation
 ------------

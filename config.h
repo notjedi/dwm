@@ -9,7 +9,7 @@ static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
 
 
-static const char *fonts[]          = { "JetBrainsMono Nerd Font:size=9:style=Bold:antialias=true:autohint=true", 
+static const char *fonts[]          = { "JetBrainsMono Nerd Font:size=9:style=Bold:antialias=true:autohint=true",
                                         "AkrutiTml1:size=9:style=Bold:antialias=true:autohint=true",
                                         "Noto Color Emoji:pixelsize=12:antialias=true:autohint=true" };
 /* #include "/home/jedi/.cache/wal/colors-wal-dwm.h" */
@@ -19,13 +19,6 @@ static char normbordercolor[]   = "#4C566A";
 static char selbgcolor[]        = "#ffffff";
 static char selfgcolor[]        = "#8542ff";
 static char selbordercolor[]    = "#FB94FF";
-
-/* static char normfgcolor[] = "#deeaf6"; */
-/* static char normbgcolor[] = "#4d4978"; */
-/* static char normbordercolor[] = "#9ba3ac"; */
-/* static char selfgcolor[] = "#deeaf6"; */
-/* static char selbgcolor[] = "#90CBFE"; */
-/* static char selbordercolor[] = "#deeaf6"; */
 
 static char *colors[][3]      = {
 	/* *               fg           bg              border   * */
@@ -94,7 +87,7 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_k,      					spawn,     				SHCMD("killprocess") },
 	{ MODKEY,                       XK_l,      					setmfact,       		{.f = +0.05 } },
 	{ MODKEY, 						XK_p,						spawn,					SHCMD("playerctl play-pause") },
-	{ MODKEY,                       XK_r,      					spawn,          		SHCMD("rofi -show drun -show-icons -lines 5 -width 30") },
+	{ MODKEY,                       XK_r,      					spawn,          		SHCMD("rofi -show drun") },
 	{ MODKEY,             			XK_q,      					killclient,     		{0} },
 	{ MODKEY, 						XK_bracketleft,				spawn,					SHCMD("playerctl previous") },
 	{ MODKEY, 						XK_bracketright,			spawn,					SHCMD("playerctl next") },
