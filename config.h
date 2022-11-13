@@ -11,7 +11,7 @@ static const int topbar             = 1;        /* 0 means bottom bar */
 
 static const char *fonts[]          = { "JetBrainsMono Nerd Font:size=9:style=Bold:antialias=true:autohint=true",
                                         "AkrutiTml1:size=9:style=Bold:antialias=true:autohint=true",
-                                        "Noto Color Emoji:pixelsize=12:antialias=true:autohint=true" };
+                                        "JoyPixels:pixelsize=12:antialias=true:autohint=true" };
 /* #include "/home/jedi/.cache/wal/colors-wal-dwm.h" */
 static char normbgcolor[]       = "#0c0d12";
 static char normfgcolor[]       = "#ffffff";
@@ -126,7 +126,7 @@ static Key keys[] = {
 	{ 0, 							XF86XK_AudioPlay,			spawn,					SHCMD("playerctl play-pause") },
 	{ 0, 							XF86XK_AudioPause,			spawn,					SHCMD("playerctl play-pause") },
 	{ 0, 							XF86XK_AudioStop,			spawn,					SHCMD("playerctl stop") },
-	
+
 	{ MODKEY,                       XK_y,      					spawn,     				SHCMD("maim --noopengl -s $HDD/screenshots/$(date +'%Y-%m-%d-%I-%M-%S').png") }, /* selct and save */
 	{ MODKEY|ShiftMask,             XK_y,      				    spawn,     				SHCMD("maim --noopengl -s | xclip -selection clipboard -t image/png") }, /* selct and copy to clipboard */
 	{ MODKEY|Mod1Mask,              XK_y,      				    spawn,     				SHCMD("maim --noopengl -i $(xdotool getactivewindow) $HDD/screenshots/$(date +'%Y-%m-%d-%I-%M-%S').png") }, /* save screeshot of active window */
