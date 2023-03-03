@@ -1,6 +1,6 @@
 /* See LICENSE file for copyright and license detailsfsdaf */
 
-#define TERMINAL "st"
+#define TERMINAL "alacritty"
 
 /* appearance */
 static const unsigned int borderpx  = 2;        /* border pixel of windows */
@@ -39,7 +39,9 @@ static const Rule rules[] = {
 	/* class      			instance    title       				tags mask     isfloating   monitor */
 	/* { "Polybar",     		NULL,       NULL,       				0,            1,           -1 }, */
 	{ NULL,	                "jetbrains-studio",             NULL,		                1 << 1,		  0,		   -1 },
-	{ NULL,					NULL,		                    "win0",						1 << 1,		  1,		   -1 },
+	{ NULL,					NULL,		                    "splash",						1 << 1,		  1,		   -1 },
+	{ NULL,					NULL,		                    "Scratchpad",						1 << 1,		  1,		   -1 },
+	{ NULL,					NULL,		                    "Welcome to Android Studio",						1 << 1,		  1,		   -1 },
 	{ NULL, 				NULL,		                    "Task Manager", 	        0,			  1,		   -1 },
 	{ NULL,					NULL,		                    "Android Emulator",			1 << 1,		  1,		   -1 },
 };
@@ -70,7 +72,8 @@ static const Layout layouts[] = {
 /* commands */
 /* static const char *termcmd[]  = { TERMINAL, NULL }; */
 static const char scratchpadname[] = "Scratchpad";
-static const char *scratchpadcmd[] = { "st", "-t", scratchpadname, "-g", "120x34", NULL };
+// static const char *scratchpadcmd[] = { "st", "-t", scratchpadname, "-g", "120x34", NULL };
+static const char *scratchpadcmd[] = { "alacritty", "-t", scratchpadname, NULL };
 /* static const char *scratchpadcmd[] = { TERMINAL, "-t", scratchpadname, "-g", "120x34", NULL }; */
 
 #include <X11/XF86keysym.h>
