@@ -116,7 +116,7 @@ static Key keys[] = {
 
 	{ MODKEY,                       XK_w,      					setlayout,      		{.v = &layouts[0]} },
 	{ MODKEY,                       XK_t,      					setlayout,      		{.v = &layouts[1]} },
-	{ MODKEY,                       XK_s,      					setlayout,      		{.v = &layouts[2]} },
+	// { MODKEY,                       XK_s,      					setlayout,      		{.v = &layouts[2]} },
 
 	{ MODKEY|ShiftMask,             XK_q,      					quit,           		{0} },
 	{ MODKEY|ShiftMask,           	XK_space,  					setlayout,      		{0} },
@@ -136,6 +136,9 @@ static Key keys[] = {
 	{ MODKEY|Mod1Mask|ShiftMask,    XK_y,      				    spawn,     				SHCMD("maim --noopengl -i $(xdotool getactivewindow) | xclip -selection clipboard -target image/png") }, /* copy screeshot of active window to clipboard */
 	{ MODKEY,                       XK_o,      				    spawn,     				SHCMD("maim --noopengl $HDD/screenshots/$(date +'%Y-%m-%d-%I-%M-%S').png") }, /* save screeshot of whole screen */
 	{ MODKEY|ShiftMask,             XK_o,      				    spawn,     				SHCMD("maim --noopengl | xclip -selection clipboard -t image/png") },
+
+	{ MODKEY,                       XK_s,      					spawn,      		 SHCMD("flameshot gui") },
+    { MODKEY,                       XK_c,                       spawn,               SHCMD("clipmenu")},
 
 	TAGKEYS(                        XK_1,      	                						0)
 	TAGKEYS(                        XK_2,      	                						1)
