@@ -130,6 +130,9 @@ static Key keys[] = {
 	{ 0, 							XF86XK_AudioPause,			spawn,					SHCMD("playerctl play-pause") },
 	{ 0, 							XF86XK_AudioStop,			spawn,					SHCMD("playerctl stop") },
 
+	{ 0, 							XF86XK_MonBrightnessUp ,	spawn,			        SHCMD("rumos inc 10") },
+	{ 0, 							XF86XK_MonBrightnessDown ,	spawn,				    SHCMD("rumos dec 10") },
+
 	{ MODKEY,                       XK_y,      					spawn,     				SHCMD("maim --noopengl -s $HDD/screenshots/$(date +'%Y-%m-%d-%I-%M-%S').png") }, /* selct and save */
 	{ MODKEY|ShiftMask,             XK_y,      				    spawn,     				SHCMD("maim --noopengl -s | xclip -selection clipboard -t image/png") }, /* selct and copy to clipboard */
 	{ MODKEY|Mod1Mask,              XK_y,      				    spawn,     				SHCMD("maim --noopengl -i $(xdotool getactivewindow) $HDD/screenshots/$(date +'%Y-%m-%d-%I-%M-%S').png") }, /* save screeshot of active window */
